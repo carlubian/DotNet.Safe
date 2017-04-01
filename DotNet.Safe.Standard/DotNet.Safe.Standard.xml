@@ -1,0 +1,396 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNet.Safe.Standard</name>
+    </assembly>
+    <members>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Composition`1">
+            <summary>
+            Represents an in-progress composition. This can be
+            finalized eagerly or lazily.
+            </summary>
+            <typeparam name="TCurrent">Current type of the composition</typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Then(System.Action)">
+            <summary>
+            Append an action to this composition.
+            </summary>
+            <param name="action">Action</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Then(System.Action{`0})">
+            <summary>
+            Append an action to this composition.
+            </summary>
+            <param name="action">Action</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Then``1(System.Func{``0})">
+            <summary>
+            Append a function to this composition.
+            </summary>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Then``1(System.Func{`0,``0})">
+            <summary>
+            Append a function to this composition.
+            </summary>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Otherwise(System.Action)">
+            <summary>
+            Execute an action if the composition has failed at
+            this point. The action will be ignored if the
+            composition is successful.
+            </summary>
+            <param name="action">Action</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Otherwise(System.Action{System.String})">
+            <summary>
+            Execute an action if the composition has failed at
+            this point. The action will be ignored if the
+            composition is successful.
+            </summary>
+            <param name="action">Action</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Now">
+            <summary>
+            Finalize the composition and execute it eagerly. The
+            result will be returned as an instance of Either.
+            </summary>
+            <returns>Either</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Later">
+            <summary>
+            Finalize the composition and return an instance of Lazy
+            ready to be invoked at a later time.
+            </summary>
+            <returns>Lazy</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Either`1">
+            <summary>
+            Represents either a success or a failure.
+            Either cannot be directly instanced; Use Success
+            or Failure instead.
+            </summary>
+            <typeparam name="T">Type within</typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Either`1.Succeeded">
+            <summary>
+            Determines whether this Either succeeded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Either`1.Failed">
+            <summary>
+            Determines whether this Either failed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Either`1.GetOrElse(`0)">
+            <summary>
+            Gets the value within. If the Either failed
+            or the value cannot be recovered, other will
+            be returned instead.
+            </summary>
+            <param name="other">Alternative value</param>
+            <returns>Value</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Either`1.ErrorOrElse(System.String)">
+            <summary>
+            Gets the error message. If the Either succeeded
+            or the error cannot be recovered, other will
+            be returned instead.
+            </summary>
+            <param name="other">Alternative message</param>
+            <returns>Error message</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.ErrorManager">
+            <summary>
+            ErrorManagers attempt to execute actions and
+            functions. Those executions return an instance
+            of Either with the result.
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.ErrorManager.Default">
+            <summary>
+            Gets a default ErrorManager ready to attempt things.
+            </summary>
+            <returns>Default ErrorManager</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.ErrorManager.Attempt(System.Action)">
+            <summary>
+            Attempt to execute an action
+            </summary>
+            <param name="action">Action</param>
+            <returns>Either</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.ErrorManager.Attempt``1(System.Action{``0},``0)">
+            <summary>
+            Attempt to execute an action
+            </summary>
+            <typeparam name="TParam">Type of the parameter</typeparam>
+            <param name="action">Action</param>
+            <param name="param">Parameter</param>
+            <returns>Either</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.ErrorManager.Attempt``1(System.Func{``0})">
+            <summary>
+            Attempt to execute a function
+            </summary>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <returns>Either</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.ErrorManager.Attempt``2(System.Func{``0,``1},``0)">
+            <summary>
+            Attempt to execute a function
+            </summary>
+            <typeparam name="TParam">Type of the parameter</typeparam>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <param name="param">Parameter</param>
+            <returns>Either</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Failure`1">
+            <summary>
+            Represents a failed Either.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Failure`1.#ctor(System.String)">
+            <summary>
+            Creates a new failure
+            </summary>
+            <param name="error">Error message</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Failure`1.ErrorOrElse(System.String)">
+            <summary>
+            Gets the error message or an alternative if it
+            can't be recovered.
+            </summary>
+            <param name="other">Alternative message</param>
+            <returns>Error message</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Failure`1.Failed">
+            <summary>
+            Determines whether this Either failed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Failure`1.GetOrElse(`0)">
+            <summary>
+            Gets the result or an alternative if it
+            can't be recovered.
+            </summary>
+            <param name="other">Alternative result</param>
+            <returns>Result</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Failure`1.Succeeded">
+            <summary>
+            Determines whether this Either succeeded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Lazy`1">
+            <summary>
+            Represents a composition ready to be executed on demand.
+            </summary>
+            <typeparam name="TResult">Type of the result</typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Lazy`1.Eval">
+            <summary>
+            Invoke the composition and return the result as an
+            instance of Either.
+            </summary>
+            <returns>Either</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Steps.ICompositionStep">
+            <summary>
+            Represents each of the steps in a composition.
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ICompositionStep.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+            <summary>
+            Invoke the step.
+            </summary>
+            <param name="param">Result of the previous step</param>
+            <returns>Result of the current step</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1">
+            <summary>
+            Represents a step that will execute on a failed composition.
+            </summary>
+            <typeparam name="TParam"></typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action{System.String})">
+            <summary>
+            Creates a new step
+            </summary>
+            <param name="action">Action</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action)">
+            <summary>
+            Creates a new step
+            </summary>
+            <param name="action">Action</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+            <summary>
+            Invoke the  step
+            </summary>
+            <param name="param">Result of the previous step</param>
+            <returns>Result of the current step</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2">
+            <summary>
+            Represents a step that will be executed on a successful composition
+            </summary>
+            <typeparam name="TParam"></typeparam>
+            <typeparam name="TResult"></typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.#ctor(System.Func{`0,`1})">
+            <summary>
+            Creates a new step
+            </summary>
+            <param name="func">Function</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+            <summary>
+            Invokes the step
+            </summary>
+            <param name="param">Result of the previous step</param>
+            <returns>Result of the current step</returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Success`1">
+            <summary>
+            Represents a successful Either.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Success`1.#ctor(`0)">
+            <summary>
+            Creates a new success
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Success`1.ErrorOrElse(System.String)">
+            <summary>
+            Gets the error message or an alternative if
+            it can't be recovered.
+            </summary>
+            <param name="other">Alternative message</param>
+            <returns>Error message</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Success`1.Failed">
+            <summary>
+            Determines whether this Either failed.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Success`1.GetOrElse(`0)">
+            <summary>
+            Gets the result or an alternative if
+            it can't be recovered.
+            </summary>
+            <param name="other">Alternative result</param>
+            <returns>Result</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Success`1.Succeeded">
+            <summary>
+            Determines whether this Either succeeded.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Exceptions.Try">
+            <summary>
+            Try exposes methods to start a function composition.
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Try.This(System.Action)">
+            <summary>
+            Start a composition with an action.
+            </summary>
+            <param name="action">Action</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Try.This``1(System.Action{``0},``0)">
+            <summary>
+            Start a composition with an action.
+            </summary>
+            <typeparam name="TParam">Type of the parameter</typeparam>
+            <param name="action">Action</param>
+            <param name="param">Parameter</param>
+            <returns>In-progress composition</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Try.This``1(System.Func{``0})">
+            <summary>
+            Start a composition with a function.
+            </summary>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Try.This``2(System.Func{``0,``1},``0)">
+            <summary>
+            Start a composition with a function.
+            </summary>
+            <typeparam name="TParam">Type of the parameter</typeparam>
+            <typeparam name="TResult">Type of the result</typeparam>
+            <param name="func">Function</param>
+            <param name="param">Parameter</param>
+            <returns></returns>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Util.Resources">
+            <summary>
+            Provides common strings that are used in
+            several parts of the code.
+            </summary>
+        </member>
+        <member name="F:DotNet.Safe.Standard.Util.Resources.MISSING_ERROR_MESSAGE">
+            <summary>
+            Message shown when recovering an error message
+            fails because the message is missing or invalid.
+            </summary>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Util.Unit">
+            <summary>
+            Unit is used as a type when handling void-consuming or
+            supplying functions.
+            Unit only has a single instance, and it's only equal
+            to itself.
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Util.Unit.Instance">
+            <summary>
+            Get the active instance of Unit
+            </summary>
+            <returns>Unit</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Util.Unit.Equals(System.Object)">
+            <summary>
+            Compares this object with another.
+            </summary>
+            <param name="obj">Other object</param>
+            <returns>Equality result</returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Util.Unit.GetHashCode">
+            <summary>
+            Returns a numeric identifier for this object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Util.Unit.ToString">
+            <summary>
+            Returns a string representation for this object.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
