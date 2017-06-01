@@ -1,5 +1,7 @@
-﻿using DotNet.Safe.Standard.Util;
+﻿using DotNet.Safe.Standard.Events;
+using DotNet.Safe.Standard.Util;
 using System;
+using System.Collections.Generic;
 
 namespace DotNet.Safe.Standard.Exceptions.Steps
 {
@@ -7,41 +9,86 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
     /// Represents a step that will execute on a failed composition.
     /// </summary>
     /// <typeparam name="TParam"></typeparam>
-    public class OtherwiseCompositionStep<TParam> : ICompositionStep
+    internal class OtherwiseCompositionStep<TParam> : ICompositionStep
     {
-        private Action<string> _action;
+        private readonly Action<string> _action;
+        private IEnumerable<ICompositionListener> _listeners;
+        private int _num;
 
         /// <summary>
         /// Creates a new step
         /// </summary>
         /// <param name="action">Action</param>
-        public OtherwiseCompositionStep(Action<string> action)
+        /// <param name="num">Step number</param>
+        internal OtherwiseCompositionStep(Action<string> action, int num)
         {
             _action = action;
+            _num = num;
         }
 
         /// <summary>
         /// Creates a new step
         /// </summary>
         /// <param name="action">Action</param>
-        public OtherwiseCompositionStep(Action action)
+        /// <param name="num">Step number</param>
+        internal OtherwiseCompositionStep(Action action, int num)
         {
             _action = (str) => action();
+            _num = num;
         }
 
         /// <summary>
         /// Invoke the  step
         /// </summary>
         /// <param name="param">Result of the previous step</param>
+        /// <param name="listeners">Composition listeners</param>
         /// <returns>Result of the current step</returns>
-        public Either<object> Invoke(Either<object> param)
+        public Either<object> Invoke(Either<object> param, IEnumerable<ICompositionListener> listeners)
         {
+            _listeners = listeners;
+
             if (param.Succeeded())
+            {
+                OnOtherwiseIgnored();
                 return param;
+            }
 
-            ErrorManager.Default().Attempt(_action, param.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
+            OnOtherwiseBeginInvocation();
+            var tmp = ErrorManager.Default().Attempt(_action, param.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
 
+            if(tmp.Failed())
+            {
+                OnOtherwiseFailure(tmp.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
+            }
+
+            OnOtherwiseEndInvocation();
             return param;
+        }
+
+        /* ---- Event Handler helper methods ---- */
+
+        private void OnOtherwiseIgnored()
+        {
+            foreach (var listener in _listeners)
+                listener.OnOtherwiseIgnored(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+        }
+
+        private void OnOtherwiseBeginInvocation()
+        {
+            foreach (var listener in _listeners)
+                listener.OnOtherwiseBeginInvocation(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+        }
+
+        private void OnOtherwiseEndInvocation()
+        {
+            foreach (var listener in _listeners)
+                listener.OnOtherwiseEndInvocation(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+        }
+
+        private void OnOtherwiseFailure(string error)
+        {
+            foreach (var listener in _listeners)
+                listener.OnOtherwiseFailure(this, new CompositionError() { ErrorMessage = error, Number = _num });
         }
     }
 }

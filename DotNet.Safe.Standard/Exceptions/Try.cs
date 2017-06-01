@@ -20,7 +20,7 @@ namespace DotNet.Safe.Standard.Exceptions
             {
                 action();
                 return Unit.Instance();
-            }));
+            }, 1), 1);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace DotNet.Safe.Standard.Exceptions
             {
                 action(param);
                 return Unit.Instance();
-            }));
+            }, 1), 1);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns></returns>
         public static Composition<TResult> This<TResult>(Func<TResult> func)
         {
-            return new Composition<TResult>(new ThenCompositionStep<Unit, TResult>((param) => func()));
+            return new Composition<TResult>(new ThenCompositionStep<Unit, TResult>((param) => func(), 1), 1);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns></returns>
         public static Composition<TResult> This<TParam, TResult>(Func<TParam, TResult> func, TParam param)
         {
-            return new Composition<TResult>(new ThenCompositionStep<Unit, TResult>((_param) => func(param)));
+            return new Composition<TResult>(new ThenCompositionStep<Unit, TResult>((_param) => func(param), 1), 1);
         }
     }
 }

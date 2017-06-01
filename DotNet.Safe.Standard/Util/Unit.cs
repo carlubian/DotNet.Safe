@@ -8,7 +8,7 @@
     /// </summary>
     public class Unit
     {
-        private static Unit _unit = new Unit();
+        private static readonly Unit _unit = new Unit();
 
         private Unit() { }
 

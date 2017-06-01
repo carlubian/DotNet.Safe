@@ -4,12 +4,228 @@
         <name>DotNet.Safe.Standard</name>
     </assembly>
     <members>
+        <member name="T:DotNet.Safe.Standard.Events.CompositionError">
+            <summary>
+            Event arguments for an error during composition execution.
+            </summary>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.CompositionError.ErrorMessage">
+            <summary>
+            Get the error message provided.
+            </summary>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.CompositionError.Number">
+            <summary>
+            Get the step number.
+            </summary>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Events.CompositionListener">
+            <summary>
+            Default class for composition event listeners. Make your class extend from
+            this one, then override the methods you need.
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnCompositionFinished(System.Object,DotNet.Safe.Standard.Events.CompositionStatus)">
+            <summary>
+            This method will be called when a composition finishes executing.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnCompositionStarted(System.Object,DotNet.Safe.Standard.Events.CompositionStatus)">
+            <summary>
+            This method will be called when a composition starts to execute.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnOtherwiseBeginInvocation(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step starts being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnOtherwiseEndInvocation(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step finishes being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnOtherwiseFailure(System.Object,DotNet.Safe.Standard.Events.CompositionError)">
+            <summary>
+            This method will be called when an otherwise step fails.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnOtherwiseIgnored(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step is ignored.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnStepBeginInvocation(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step starts being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnStepEndInvocation(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step finishes being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Params</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnStepFailure(System.Object,DotNet.Safe.Standard.Events.CompositionError)">
+            <summary>
+            This method will be called when a composition step fails.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.CompositionListener.OnStepIgnored(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step is ignored.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Events.CompositionStatus">
+            <summary>
+            Event arguments for composition level events.
+            </summary>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Events.CompositionStep">
+            <summary>
+            Event arguments for step level events.
+            </summary>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.CompositionStep.Name">
+            <summary>
+            Gets the internal name for the step.
+            </summary>
+            <remarks>
+            This is not a readable name. It looks like
+            System.Func'2[System.Int32,System.Int32]
+            </remarks>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.CompositionStep.Number">
+            <summary>
+            Gets the step number.
+            </summary>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Events.ICompositionListener">
+            <summary>
+            Common interface for all event listeners
+            </summary>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnStepBeginInvocation(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step starts being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnStepEndInvocation(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step finishes being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Params</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnStepIgnored(System.Object,DotNet.Safe.Standard.Events.CompositionStep)">
+            <summary>
+            This method will be called when a composition step is ignored.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnStepFailure(System.Object,DotNet.Safe.Standard.Events.CompositionError)">
+            <summary>
+            This method will be called when a composition step fails.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnOtherwiseBeginInvocation(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step starts being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnOtherwiseEndInvocation(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step finishes being invoked.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnOtherwiseIgnored(System.Object,DotNet.Safe.Standard.Events.OtherwiseStep)">
+            <summary>
+            This method will be called when an otherwise step is ignored.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnOtherwiseFailure(System.Object,DotNet.Safe.Standard.Events.CompositionError)">
+            <summary>
+            This method will be called when an otherwise step fails.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnCompositionStarted(System.Object,DotNet.Safe.Standard.Events.CompositionStatus)">
+            <summary>
+            This method will be called when a composition starts to execute.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Events.ICompositionListener.OnCompositionFinished(System.Object,DotNet.Safe.Standard.Events.CompositionStatus)">
+            <summary>
+            This method will be called when a composition finishes executing.
+            </summary>
+            <param name="sender">Source</param>
+            <param name="args">Arguments</param>
+        </member>
+        <member name="T:DotNet.Safe.Standard.Events.OtherwiseStep">
+            <summary>
+            Event arguments for otherwise level events.
+            </summary>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.OtherwiseStep.Name">
+            <summary>
+            Gets the internal name for the otherwise.
+            </summary>
+            <remarks>
+            This is not a readable name. It looks like
+            System.Func'2[System.Int32,System.Int32]
+            </remarks>
+        </member>
+        <member name="P:DotNet.Safe.Standard.Events.OtherwiseStep.Number">
+            <summary>
+            Gets the otherwise number.
+            </summary>
+        </member>
         <member name="T:DotNet.Safe.Standard.Exceptions.Composition`1">
             <summary>
             Represents an in-progress composition. This can be
             finalized eagerly or lazily.
             </summary>
             <typeparam name="TCurrent">Current type of the composition</typeparam>
+        </member>
+        <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Attach(DotNet.Safe.Standard.Events.ICompositionListener)">
+            <summary>
+            Attaches an event listener to this composition.
+            </summary>
+            <param name="listener">Composition listener</param>
+            <returns>In-progress composition</returns>
         </member>
         <member name="M:DotNet.Safe.Standard.Exceptions.Composition`1.Then(System.Action)">
             <summary>
@@ -216,11 +432,12 @@
             Represents each of the steps in a composition.
             </summary>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ICompositionStep.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ICompositionStep.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object},System.Collections.Generic.IEnumerable{DotNet.Safe.Standard.Events.ICompositionListener})">
             <summary>
             Invoke the step.
             </summary>
             <param name="param">Result of the previous step</param>
+            <param name="listeners">Composition event listeners</param>
             <returns>Result of the current step</returns>
         </member>
         <member name="T:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1">
@@ -229,23 +446,26 @@
             </summary>
             <typeparam name="TParam"></typeparam>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action{System.String})">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action{System.String},System.Int32)">
             <summary>
             Creates a new step
             </summary>
             <param name="action">Action</param>
+            <param name="num">Step number</param>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action)">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.#ctor(System.Action,System.Int32)">
             <summary>
             Creates a new step
             </summary>
             <param name="action">Action</param>
+            <param name="num">Step number</param>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.OtherwiseCompositionStep`1.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object},System.Collections.Generic.IEnumerable{DotNet.Safe.Standard.Events.ICompositionListener})">
             <summary>
             Invoke the  step
             </summary>
             <param name="param">Result of the previous step</param>
+            <param name="listeners">Composition listeners</param>
             <returns>Result of the current step</returns>
         </member>
         <member name="T:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2">
@@ -255,17 +475,19 @@
             <typeparam name="TParam"></typeparam>
             <typeparam name="TResult"></typeparam>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.#ctor(System.Func{`0,`1})">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.#ctor(System.Func{`0,`1},System.Int32)">
             <summary>
             Creates a new step
             </summary>
             <param name="func">Function</param>
+            <param name="num">Step number</param>
         </member>
-        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object})">
+        <member name="M:DotNet.Safe.Standard.Exceptions.Steps.ThenCompositionStep`2.Invoke(DotNet.Safe.Standard.Exceptions.Either{System.Object},System.Collections.Generic.IEnumerable{DotNet.Safe.Standard.Events.ICompositionListener})">
             <summary>
             Invokes the step
             </summary>
             <param name="param">Result of the previous step</param>
+            <param name="listeners">Composition listeners</param>
             <returns>Result of the current step</returns>
         </member>
         <member name="T:DotNet.Safe.Standard.Exceptions.Success`1">

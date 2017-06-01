@@ -10,7 +10,7 @@ namespace DotNet.Safe.Standard.Exceptions
     /// </summary>
     public class ErrorManager
     {
-        private static ErrorManager _default = new ErrorManager();
+        private static readonly ErrorManager _default = new ErrorManager();
 
         /// <summary>
         /// Gets a default ErrorManager ready to attempt things.

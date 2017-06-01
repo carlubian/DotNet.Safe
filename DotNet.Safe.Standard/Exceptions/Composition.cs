@@ -1,7 +1,9 @@
 ﻿using DotNet.Safe.Standard.Exceptions.Steps;
+using DotNet.Safe.Standard.Events;
 using DotNet.Safe.Standard.Util;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DotNet.Safe.Standard.Exceptions
 {
@@ -12,19 +14,34 @@ namespace DotNet.Safe.Standard.Exceptions
     /// <typeparam name="TCurrent">Current type of the composition</typeparam>
     public class Composition<TCurrent>
     {
-        private IList<ICompositionStep> _steps = new List<ICompositionStep>();
+        private IList<ICompositionStep> _steps;
+        private IList<ICompositionListener> _listeners = new List<ICompositionListener>();
+        private int _num;
 
-        internal Composition(ICompositionStep step)
+        internal Composition(ICompositionStep step, int num)
         {
             _steps = new List<ICompositionStep>
             {
                 step
             };
+            _num = num;
         }
 
-        internal Composition(IList<ICompositionStep> steps)
+        internal Composition(IList<ICompositionStep> steps, int num)
         {
             _steps = steps;
+            _num = num;
+        }
+
+        /// <summary>
+        /// Attaches an event listener to this composition.
+        /// </summary>
+        /// <param name="listener">Composition listener</param>
+        /// <returns>In-progress composition</returns>
+        public Composition<TCurrent> Attach(ICompositionListener listener)
+        {
+            _listeners.Add(listener);
+            return this;
         }
 
         /// <summary>
@@ -38,9 +55,9 @@ namespace DotNet.Safe.Standard.Exceptions
             {
                 action();
                 return Unit.Instance();
-            }));
+            }, ++_num));
 
-            return new Composition<Unit>(_steps);
+            return new Composition<Unit>(_steps, _num);
         }
 
         /// <summary>
@@ -54,9 +71,9 @@ namespace DotNet.Safe.Standard.Exceptions
             {
                 action(param);
                 return Unit.Instance();
-            }));
+            }, ++_num));
 
-            return new Composition<Unit>(_steps);
+            return new Composition<Unit>(_steps, _num);
         }
 
         /// <summary>
@@ -67,9 +84,9 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TResult> Then<TResult>(Func<TResult> func)
         {
-            _steps.Add(new ThenCompositionStep<TCurrent, TResult>((param) => func()));
+            _steps.Add(new ThenCompositionStep<TCurrent, TResult>((param) => func(), ++_num));
 
-            return new Composition<TResult>(_steps);
+            return new Composition<TResult>(_steps, _num);
         }
 
         /// <summary>
@@ -80,9 +97,9 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TResult> Then<TResult>(Func<TCurrent, TResult> func)
         {
-            _steps.Add(new ThenCompositionStep<TCurrent, TResult>((param) => func(param)));
+            _steps.Add(new ThenCompositionStep<TCurrent, TResult>(func, ++_num));
 
-            return new Composition<TResult>(_steps);
+            return new Composition<TResult>(_steps, _num);
         }
 
         /// <summary>
@@ -94,9 +111,9 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TCurrent> Otherwise(Action action)
         {
-            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action));
+            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action, ++_num));
 
-            return new Composition<TCurrent>(_steps);
+            return new Composition<TCurrent>(_steps, _num);
         }
 
         /// <summary>
@@ -108,9 +125,9 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TCurrent> Otherwise(Action<string> action)
         {
-            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action));
+            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action, ++_num));
 
-            return new Composition<TCurrent>(_steps);
+            return new Composition<TCurrent>(_steps, _num);
         }
 
         /// <summary>
@@ -122,8 +139,9 @@ namespace DotNet.Safe.Standard.Exceptions
         {
             Either<object> tmp = new Success<object>(null);
 
-            foreach (var step in _steps)
-                tmp = step.Invoke(tmp);
+            OnCompositionStarted();
+            tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _listeners));
+            OnCompositionFinished();
 
             if (tmp.Failed())
                 return new Failure<TCurrent>(tmp.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
@@ -138,20 +156,35 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>Lazy</returns>
         public Lazy<TCurrent> Later()
         {
-            Func<Either<TCurrent>> func = () =>
+            Either<TCurrent> Func()
             {
                 Either<object> tmp = new Success<object>(null);
 
-                foreach (var step in _steps)
-                    tmp = step.Invoke(tmp);
+                OnCompositionStarted();
+                tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _listeners));
+                OnCompositionFinished();
 
                 if (tmp.Failed())
                     return new Failure<TCurrent>(tmp.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
 
-                return new Success<TCurrent>((TCurrent)tmp.GetOrElse(default(TCurrent)));
-            };
+                return new Success<TCurrent>((TCurrent) tmp.GetOrElse(default(TCurrent)));
+            }
 
-            return new Lazy<TCurrent>(func);
+            return new Lazy<TCurrent>(Func);
+        }
+
+        /* ---- Event Handler helper methods ---- */
+
+        private void OnCompositionStarted()
+        {
+            foreach (var listener in _listeners)
+                listener.OnCompositionStarted(this, new CompositionStatus());
+        }
+
+        private void OnCompositionFinished()
+        {
+            foreach (var listener in _listeners)
+                listener.OnCompositionFinished(this, new CompositionStatus());
         }
     }
 }

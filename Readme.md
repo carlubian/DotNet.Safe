@@ -9,14 +9,14 @@ Start using DotNet.Safe in your projects and enjoy the next level of safe, expre
 ### Safe & Sound
 By using DotNet.Safe, you have the guarantee that all exceptions thrown will be handled securely and transparently. Focus on the results, and leave the means to us!
 
-### No need for shadow hunting
+### No need for Shadow Hunting
 Understand what a piece of code does with a single glance. You don't have to delve between boilerplate exception handling code.
 
 ### Easy maintenance
 Easily extend or diminish a process by adding or removing calls. The fluent API exposed allows for effortless tweaking of any given logic chain.
 
 ### Future proof
-DotNet.Safe can be used from .NET Framework and .NET Core apps (with more coming soon!). It also supports the latest features in C#, such as tuples and local functions.
+DotNet.Safe can be used from .NET Framework, .NET Core, Mono, Xamarin and the UWP. It also supports the latest features in C#, such as tuples and local functions.
 
 ***
 
@@ -42,7 +42,7 @@ DotNet.Safe can be used from .NET Framework and .NET Core apps (with more coming
 		<tr>
 			<td>.NET Core, ASP.NET Core</td>
 			<td>.NET Core</td>
-			<td>1.0 or higher</td>
+			<td>1.0 and above</td>
 		</tr>
 		<tr>
 			<td>Windows Store Apps</td>
@@ -52,17 +52,22 @@ DotNet.Safe can be used from .NET Framework and .NET Core apps (with more coming
 		<tr>
 			<td>.NET Standard Class Library</td>
 			<td>.NET Standard</td>
-			<td>1.4 or higher</td>
+			<td>1.4 and above</td>
 		</tr>
 		<tr>
-			<td>Android or iOS via Xamarin</td>
-			<td>Xamarin Platform</td>
-			<td>Not yet supported</td>
+			<td>iOS apps</td>
+			<td>Xamarin iOS</td>
+			<td>10.0</td>
+		</tr>
+		<tr>
+			<td>Android apps</td>
+			<td>Xamarin Android</td>
+			<td>7.0</td>
 		</tr>
 		<tr>
 			<td>Mono</td>
 			<td>Mono Platform</td>
-			<td>Not yet supported</td>
+			<td>4.6</td>
 		</tr>
 	</tody>
 </table>
