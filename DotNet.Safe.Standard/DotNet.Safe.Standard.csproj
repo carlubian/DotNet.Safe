@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>DotNet.Safe.Standard</PackageId>
     <PackageVersion>1.1.0</PackageVersion>
     <Description>Provides a new way of writing safe code that won't throw exceptions like a madman when something goes wrong.</Description>
