@@ -25,7 +25,7 @@ DotNet.Safe can be used from .NET Framework, .NET Core, Mono, Xamarin and the UW
 <table>
 	<thead>
 		<tr>
-			DotNet.Safe is currently targeting: <strong>.NET Standard 1.4</strong>
+			DotNet.Safe is currently targeting: <strong>.NET Standard 2.0</strong>
 		</tr>
 		<tr>
 			<th>Project type</th>
@@ -42,32 +42,37 @@ DotNet.Safe can be used from .NET Framework, .NET Core, Mono, Xamarin and the UW
 		<tr>
 			<td>.NET Core, ASP.NET Core</td>
 			<td>.NET Core</td>
-			<td>1.0 and above</td>
+			<td>2.0</td>
 		</tr>
 		<tr>
 			<td>Windows Store Apps</td>
 			<td>Universal Windows Platform</td>
-			<td>10.0</td>
+			<td>Visual Studio 15.4</td>
 		</tr>
 		<tr>
 			<td>.NET Standard Class Library</td>
 			<td>.NET Standard</td>
-			<td>1.4 and above</td>
+			<td>2.0</td>
 		</tr>
 		<tr>
-			<td>iOS apps</td>
-			<td>Xamarin iOS</td>
-			<td>10.0</td>
+			<td>Android via Xamarin</td>
+			<td>Xamarin.Android</td>
+			<td>7.5</td>
 		</tr>
 		<tr>
-			<td>Android apps</td>
-			<td>Xamarin Android</td>
-			<td>7.0</td>
+			<td>iOS via Xamarin</td>
+			<td>Xamarin.iOS</td>
+			<td>10.14</td>
+		</tr>
+		<tr>
+			<td>macOS via Xamarin</td>
+			<td>Xamarin.Mac</td>
+			<td>3.8</td>
 		</tr>
 		<tr>
 			<td>Mono</td>
-			<td>Mono Platform</td>
-			<td>4.6</td>
+			<td>Mono</td>
+			<td>5.4</td>
 		</tr>
 	</tody>
 </table>
