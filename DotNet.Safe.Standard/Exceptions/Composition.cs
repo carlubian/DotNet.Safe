@@ -95,9 +95,35 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <typeparam name="TResult">Type of the result</typeparam>
         /// <param name="func">Function</param>
         /// <returns>In-progress composition</returns>
+        public Composition<TResult> Then<TResult>(Func<Either<TResult>> func)
+        {
+            _steps.Add(new EitherCompositionStep<TCurrent, TResult>((param) => func(), ++_num));
+
+            return new Composition<TResult>(_steps, _num);
+        }
+
+        /// <summary>
+        /// Append a function to this composition.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <param name="func">Function</param>
+        /// <returns>In-progress composition</returns>
         public Composition<TResult> Then<TResult>(Func<TCurrent, TResult> func)
         {
             _steps.Add(new ThenCompositionStep<TCurrent, TResult>(func, ++_num));
+
+            return new Composition<TResult>(_steps, _num);
+        }
+
+        /// <summary>
+        /// Append a function to this composition.
+        /// </summary>
+        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <param name="func">Function</param>
+        /// <returns>In-progress composition</returns>
+        public Composition<TResult> Then<TResult>(Func<TCurrent, Either<TResult>> func)
+        {
+            _steps.Add(new EitherCompositionStep<TCurrent, TResult>(func, ++_num));
 
             return new Composition<TResult>(_steps, _num);
         }
