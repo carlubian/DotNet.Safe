@@ -53,6 +53,17 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <summary>
         /// Start a composition with a function.
         /// </summary>
+        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <param name="func">Function</param>
+        /// <returns></returns>
+        public static Composition<TResult> This<TResult>(Func<Either<TResult>> func)
+        {
+            return new Composition<TResult>(new EitherCompositionStep<Unit, TResult>((param) => func(), 1), 1);
+        }
+
+        /// <summary>
+        /// Start a composition with a function.
+        /// </summary>
         /// <typeparam name="TParam">Type of the parameter</typeparam>
         /// <typeparam name="TResult">Type of the result</typeparam>
         /// <param name="func">Function</param>
@@ -61,6 +72,19 @@ namespace DotNet.Safe.Standard.Exceptions
         public static Composition<TResult> This<TParam, TResult>(Func<TParam, TResult> func, TParam param)
         {
             return new Composition<TResult>(new ThenCompositionStep<Unit, TResult>((_param) => func(param), 1), 1);
+        }
+
+        /// <summary>
+        /// Start a composition with a function.
+        /// </summary>
+        /// <typeparam name="TParam">Type of the parameter</typeparam>
+        /// <typeparam name="TResult">Type of the result</typeparam>
+        /// <param name="func">Function</param>
+        /// <param name="param">Parameter</param>
+        /// <returns></returns>
+        public static Composition<TResult> This<TParam, TResult>(Func<TParam, Either<TResult>> func, TParam param)
+        {
+            return new Composition<TResult>(new EitherCompositionStep<Unit, TResult>((_param) => func(param), 1), 1);
         }
     }
 }
