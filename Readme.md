@@ -1,4 +1,4 @@
-# DotNet.Safe
+![DotNet.Safe](http://carlubian.azurewebsites.net/images/DotNetSafe.png "DotNet.Safe")
 ## Because exceptions belong in the past
 
 Start using DotNet.Safe in your projects and enjoy the next level of safe, expressive and extensible code.
