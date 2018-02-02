@@ -8,7 +8,7 @@
     /// <typeparam name="T">Type within</typeparam>
     public abstract class Either<T>
     {
-        internal T _value = default(T);
+        internal T _value;
         internal string _error = "";
 
         /// <summary>

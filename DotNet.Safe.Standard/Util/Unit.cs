@@ -1,4 +1,6 @@
-﻿namespace DotNet.Safe.Standard.Util
+﻿using System;
+
+namespace DotNet.Safe.Standard.Util
 {
     /// <summary>
     /// Unit is used as a type when handling void-consuming or
@@ -6,7 +8,7 @@
     /// Unit only has a single instance, and it's only equal
     /// to itself.
     /// </summary>
-    public class Unit
+    public sealed class Unit : IEquatable<Unit>
     {
         private static readonly Unit _unit = new Unit();
 
@@ -24,6 +26,13 @@
         /// <param name="obj">Other object</param>
         /// <returns>Equality result</returns>
         public override bool Equals(object obj) => obj is Unit;
+
+        /// <summary>
+        /// Compares this object with another Unit.
+        /// </summary>
+        /// <param name="other">Other Unit</param>
+        /// <returns>True (Unit is always equal to itself)</returns>
+        public bool Equals(Unit other) => true;
 
         /// <summary>
         /// Returns a numeric identifier for this object.

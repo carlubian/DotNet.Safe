@@ -14,8 +14,8 @@ namespace DotNet.Safe.Standard.Exceptions
     /// <typeparam name="TCurrent">Current type of the composition</typeparam>
     public class Composition<TCurrent>
     {
-        private IList<ICompositionStep> _steps;
-        private IList<ICompositionListener> _listeners = new List<ICompositionListener>();
+        private readonly IList<ICompositionStep> _steps;
+        private readonly IList<ICompositionListener> _listeners = new List<ICompositionListener>();
         private int _num;
 
         internal Composition(ICompositionStep step, int num)
@@ -170,7 +170,9 @@ namespace DotNet.Safe.Standard.Exceptions
             OnCompositionFinished();
 
             if (tmp.Failed())
+            {
                 return new Failure<TCurrent>(tmp.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
+            }
 
             return new Success<TCurrent>((TCurrent)tmp.GetOrElse(default(TCurrent)));
         }
@@ -191,7 +193,9 @@ namespace DotNet.Safe.Standard.Exceptions
                 OnCompositionFinished();
 
                 if (tmp.Failed())
+                {
                     return new Failure<TCurrent>(tmp.ErrorOrElse(Resources.MISSING_ERROR_MESSAGE));
+                }
 
                 return new Success<TCurrent>((TCurrent) tmp.GetOrElse(default(TCurrent)));
             }
@@ -204,13 +208,17 @@ namespace DotNet.Safe.Standard.Exceptions
         private void OnCompositionStarted()
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnCompositionStarted(this, new CompositionStatus());
+            }
         }
 
         private void OnCompositionFinished()
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnCompositionFinished(this, new CompositionStatus());
+            }
         }
     }
 }

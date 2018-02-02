@@ -14,7 +14,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
     {
         private readonly Func<TParam, TResult> _func;
         private IEnumerable<ICompositionListener> _listeners;
-        private int _num;
+        private readonly int _num;
 
         /// <summary>
         /// Creates a new step
@@ -64,25 +64,33 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         private void OnStepIgnored()
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnStepIgnored(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+            }
         }
 
         private void OnStepBeginInvocation()
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnStepBeginInvocation(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+            }
         }
 
         private void OnStepEndInvocation()
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnStepEndInvocation(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+            }
         }
 
         private void OnStepFailure(string error)
         {
             foreach (var listener in _listeners)
+            {
                 listener.OnStepFailure(this, new CompositionError() { ErrorMessage = error, Number = _num });
+            }
         }
     }
 }

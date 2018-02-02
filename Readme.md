@@ -1,4 +1,10 @@
-![DotNet.Safe](http://carlubian.azurewebsites.net/images/DotNetSafe.png "DotNet.Safe")
+[![Build Status](https://travis-ci.org/carlubian/DotNet.Safe.svg?branch=master)](https://travis-ci.org/carlubian/DotNet.Safe)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3835d34e76a544109d2fee1b3cfc3d2f)](https://www.codacy.com/app/carlubian/DotNet.Safe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=carlubian/DotNet.Safe&amp;utm_campaign=Badge_Grade)
+[![NuGet](https://img.shields.io/nuget/v/DotNet.Safe.Standard.svg)](https://www.nuget.org/packages/DotNet.Safe.Standard/)
+[![NuGet](https://img.shields.io/nuget/dt/DotNet.Safe.Standard.svg)](https://www.nuget.org/packages/DotNet.Safe.Standard/)
+<hr/>
+
+![DotNet.Safe](https://carlubian.azurewebsites.net/images/DotNetSafe.png?maxAge=2592000 "DotNet.Safe")
 ## Because exceptions belong in the past
 
 Start using DotNet.Safe in your projects and enjoy the next level of safe, expressive and extensible code.

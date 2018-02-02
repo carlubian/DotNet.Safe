@@ -8,7 +8,7 @@ namespace DotNet.Safe.Standard.Exceptions
     /// <typeparam name="TResult">Type of the result</typeparam>
     public class Lazy<TResult>
     {
-        private Func<Either<TResult>> _func;
+        private readonly Func<Either<TResult>> _func;
 
         internal Lazy(Func<Either<TResult>> func)
         {

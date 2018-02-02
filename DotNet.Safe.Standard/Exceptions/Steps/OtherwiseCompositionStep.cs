@@ -13,7 +13,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
     {
         private readonly Action<string> _action;
         private IEnumerable<ICompositionListener> _listeners;
-        private int _num;
+        private readonly int _num;
 
         /// <summary>
         /// Creates a new step
@@ -70,25 +70,33 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         private void OnOtherwiseIgnored()
         {
             foreach (var listener in _listeners)
-                listener.OnOtherwiseIgnored(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+            {
+                listener.OnOtherwiseIgnored(this, new OtherwiseStep { Name = _action.ToString(), Number = _num });
+            }
         }
 
         private void OnOtherwiseBeginInvocation()
         {
             foreach (var listener in _listeners)
-                listener.OnOtherwiseBeginInvocation(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+            {
+                listener.OnOtherwiseBeginInvocation(this, new OtherwiseStep { Name = _action.ToString(), Number = _num });
+            }
         }
 
         private void OnOtherwiseEndInvocation()
         {
             foreach (var listener in _listeners)
-                listener.OnOtherwiseEndInvocation(this, new OtherwiseStep() { Name = _action.ToString(), Number = _num });
+            {
+                listener.OnOtherwiseEndInvocation(this, new OtherwiseStep { Name = _action.ToString(), Number = _num });
+            }
         }
 
         private void OnOtherwiseFailure(string error)
         {
             foreach (var listener in _listeners)
-                listener.OnOtherwiseFailure(this, new CompositionError() { ErrorMessage = error, Number = _num });
+            {
+                listener.OnOtherwiseFailure(this, new CompositionError { ErrorMessage = error, Number = _num });
+            }
         }
     }
 }

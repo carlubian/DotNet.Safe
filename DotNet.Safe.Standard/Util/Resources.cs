@@ -10,6 +10,6 @@
         /// Message shown when recovering an error message
         /// fails because the message is missing or invalid.
         /// </summary>
-        public static string MISSING_ERROR_MESSAGE = "Unable to recover error message.";
+        public const string MISSING_ERROR_MESSAGE = "Unable to recover error message.";
     }
 }
