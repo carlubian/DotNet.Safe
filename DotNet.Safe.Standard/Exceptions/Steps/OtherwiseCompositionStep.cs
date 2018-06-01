@@ -8,8 +8,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
     /// <summary>
     /// Represents a step that will execute on a failed composition.
     /// </summary>
-    /// <typeparam name="TParam"></typeparam>
-    internal class OtherwiseCompositionStep<TParam> : ICompositionStep
+    internal class OtherwiseCompositionStep : ICompositionStep
     {
         private readonly Action<string> _action;
         private IEnumerable<ICompositionListener> _listeners;

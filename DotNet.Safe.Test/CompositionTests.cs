@@ -1,3 +1,4 @@
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using DotNet.Safe.Standard.Exceptions;
@@ -32,6 +33,17 @@ namespace DotNet.Safe.Test
 
             Try.This(GetFaulty)
                 .Then(Multiply).Now()
+                .Should().BeOfType(typeof(Failure<int>))
+                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
+                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+        }
+
+        [TestMethod]
+        public void TestFailure()
+        {
+            Try.This(GetFaulty)
+                .Otherwise(err => Console.WriteLine(err))
+                .Now()
                 .Should().BeOfType(typeof(Failure<int>))
                 .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
                 .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");

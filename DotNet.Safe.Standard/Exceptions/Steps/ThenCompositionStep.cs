@@ -65,7 +65,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         {
             foreach (var listener in _listeners)
             {
-                listener.OnStepIgnored(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+                listener.OnStepIgnored(this, new CompositionStep { Name = _func.ToString(), Number = _num });
             }
         }
 
@@ -73,7 +73,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         {
             foreach (var listener in _listeners)
             {
-                listener.OnStepBeginInvocation(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+                listener.OnStepBeginInvocation(this, new CompositionStep { Name = _func.ToString(), Number = _num });
             }
         }
 
@@ -81,7 +81,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         {
             foreach (var listener in _listeners)
             {
-                listener.OnStepEndInvocation(this, new CompositionStep() { Name = _func.ToString(), Number = _num });
+                listener.OnStepEndInvocation(this, new CompositionStep { Name = _func.ToString(), Number = _num });
             }
         }
 
@@ -89,7 +89,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         {
             foreach (var listener in _listeners)
             {
-                listener.OnStepFailure(this, new CompositionError() { ErrorMessage = error, Number = _num });
+                listener.OnStepFailure(this, new CompositionError { ErrorMessage = error, Number = _num });
             }
         }
     }

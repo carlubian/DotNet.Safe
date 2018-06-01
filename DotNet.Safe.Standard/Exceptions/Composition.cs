@@ -137,7 +137,7 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TCurrent> Otherwise(Action action)
         {
-            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action, ++_num));
+            _steps.Add(new OtherwiseCompositionStep(action, ++_num));
 
             return new Composition<TCurrent>(_steps, _num);
         }
@@ -151,7 +151,7 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TCurrent> Otherwise(Action<string> action)
         {
-            _steps.Add(new OtherwiseCompositionStep<TCurrent>(action, ++_num));
+            _steps.Add(new OtherwiseCompositionStep(action, ++_num));
 
             return new Composition<TCurrent>(_steps, _num);
         }
