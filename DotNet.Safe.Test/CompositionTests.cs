@@ -61,6 +61,23 @@ namespace DotNet.Safe.Test
                 .And.NotBeOfType(typeof(Success<Failure<int>>));
         }
 
+        [TestMethod]
+        public void TestMultiOtherwise()
+        {
+            int handles = 0;
+
+            Try.This(GetNumber)
+                .Otherwise(() => handles++)
+                .Then(GetFaulty)
+                .Otherwise(() => handles++)
+                .Otherwise(() => handles++)
+                .Then(GetNumber)
+                .Otherwise(() => handles++)
+                .Now();
+
+            handles.Should().Be(1);
+        }
+
         private int GetNumber() => 2;
 
         private int GetFaulty() => throw new System.Exception("Error");

@@ -14,6 +14,6 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         /// <param name="param">Result of the previous step</param>
         /// <param name="listeners">Composition event listeners</param>
         /// <returns>Result of the current step</returns>
-        Either<object> Invoke(Either<object> param, IEnumerable<ICompositionListener> listeners);
+        Either<object> Invoke(Either<object> param, CompositionParams @params, IEnumerable<ICompositionListener> listeners);
     }
 }

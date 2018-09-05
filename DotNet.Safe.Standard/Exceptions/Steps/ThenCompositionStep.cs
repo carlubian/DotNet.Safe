@@ -33,7 +33,7 @@ namespace DotNet.Safe.Standard.Exceptions.Steps
         /// <param name="param">Result of the previous step</param>
         /// <param name="listeners">Composition listeners</param>
         /// <returns>Result of the current step</returns>
-        public Either<object> Invoke(Either<object> param, IEnumerable<ICompositionListener> listeners)
+        public Either<object> Invoke(Either<object> param, CompositionParams @params, IEnumerable<ICompositionListener> listeners)
         {
             _listeners = listeners;
 

@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.1.3</Version>
+    <Authors>carlubian</Authors>
+    <Company>carlubian</Company>
+    <PackageReleaseNotes>Fixed multi otherwise invocation. Now only the first one will be executed.</PackageReleaseNotes>
+    <PackageProjectUrl>https://DotNetSafe.azurewebsites.net</PackageProjectUrl>
+    <Description>Provides a new way of writing safe code that won't throw exceptions like a madman when something goes wrong.</Description>
+    <RepositoryUrl>https://www.github.com/carlubian/DotNet.Safe</RepositoryUrl>
+    <PackageTags>exceptions, composition, dotnet-standard, dotnet-core</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

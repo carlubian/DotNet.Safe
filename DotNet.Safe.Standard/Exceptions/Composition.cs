@@ -17,6 +17,7 @@ namespace DotNet.Safe.Standard.Exceptions
         private readonly IList<ICompositionStep> _steps;
         private readonly IList<ICompositionListener> _listeners = new List<ICompositionListener>();
         private int _num;
+        private readonly CompositionParams _params = new CompositionParams();
 
         internal Composition(ICompositionStep step, int num)
         {
@@ -166,7 +167,7 @@ namespace DotNet.Safe.Standard.Exceptions
             Either<object> tmp = new Success<object>(null);
 
             OnCompositionStarted();
-            tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _listeners));
+            tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _params, _listeners));
             OnCompositionFinished();
 
             if (tmp.Failed())
@@ -189,7 +190,7 @@ namespace DotNet.Safe.Standard.Exceptions
                 Either<object> tmp = new Success<object>(null);
 
                 OnCompositionStarted();
-                tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _listeners));
+                tmp = _steps.Aggregate(tmp, (current, step) => step.Invoke(current, _params, _listeners));
                 OnCompositionFinished();
 
                 if (tmp.Failed())
