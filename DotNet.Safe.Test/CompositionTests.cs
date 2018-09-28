@@ -2,6 +2,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
 using DotNet.Safe.Standard.Exceptions;
+using DotNet.Safe.Standard.Util;
 
 namespace DotNet.Safe.Test
 {
@@ -20,6 +21,39 @@ namespace DotNet.Safe.Test
                 .Should().BeOfType(typeof(Failure<int>))
                 .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
                 .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+        }
+
+        [TestMethod]
+        public void TestAction()
+        {
+            Try.This(() => Console.WriteLine("Foo")).Now()
+                .Should().BeOfType(typeof(Success<Unit>))
+                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
+                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+
+            Try.This(GetNumber)
+                .Then((n) => Console.WriteLine(n)).Now()
+                .Should().BeOfType(typeof(Success<Unit>))
+                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
+                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+        }
+
+        [TestMethod]
+        public void TestConsumer()
+        {
+            Try.This((str) => Console.WriteLine(str), "Foo").Now()
+                .Should().BeOfType(typeof(Success<Unit>))
+                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
+                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+        }
+
+        [TestMethod]
+        public void TestFunction()
+        {
+            Try.This(Multiply, 12).Now()
+                .Should().BeOfType(typeof(Success<int>))
+                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 24)
+                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
         }
 
         [TestMethod]
@@ -59,6 +93,11 @@ namespace DotNet.Safe.Test
             Try.This(GetFailure).Now()
                 .Should().BeOfType(typeof(Failure<int>))
                 .And.NotBeOfType(typeof(Success<Failure<int>>));
+
+            Try.This(GetNumber)
+                .Then(GetEither).Now()
+                .Should().BeOfType(typeof(Success<int>))
+                .And.NotBeOfType(typeof(Success<Success<int>>));
         }
 
         [TestMethod]
