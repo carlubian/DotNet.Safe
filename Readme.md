@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/carlubian/DotNet.Safe.svg?branch=master)](https://travis-ci.org/carlubian/DotNet.Safe)
+[![Build Status](https://carlubian.visualstudio.com/DotNet.Safe/_apis/build/status/DotNet.Safe%20Build)](https://carlubian.visualstudio.com/DotNet.Safe/_build/latest?definitionId=10)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/3835d34e76a544109d2fee1b3cfc3d2f)](https://www.codacy.com/app/carlubian/DotNet.Safe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=carlubian/DotNet.Safe&amp;utm_campaign=Badge_Grade)
 [![NuGet](https://img.shields.io/nuget/v/DotNet.Safe.Standard.svg)](https://www.nuget.org/packages/DotNet.Safe.Standard/)
 [![NuGet](https://img.shields.io/nuget/dt/DotNet.Safe.Standard.svg)](https://www.nuget.org/packages/DotNet.Safe.Standard/)
