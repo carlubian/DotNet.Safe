@@ -31,7 +31,7 @@ DotNet.Safe can be used from .NET Framework, .NET Core, Mono, Xamarin and the UW
 <table>
 	<thead>
 		<tr>
-			DotNet.Safe is currently multi-targetting targeting: <strong>.NET Standard 2.0</strong> and <strong>.NET Framework 4.6.1</strong>
+			DotNet.Safe is currently multi-targeting: <strong>.NET Standard 2.0</strong> and <strong>.NET Framework 4.6.1</strong>
 		</tr>
 		<tr>
 			<th>Project type</th>
