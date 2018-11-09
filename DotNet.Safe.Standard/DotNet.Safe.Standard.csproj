@@ -10,7 +10,7 @@
     <Company>carlubian</Company>
     <PackageReleaseNotes>Added framework multi-targetting for .NET Framework 4.6.1</PackageReleaseNotes>
     <PackageProjectUrl>https://DotNetSafe.azurewebsites.net</PackageProjectUrl>
-    <PackageIconUrl>http://carlubian.azurewebsites.net/images/icon-dotnetsafe.png</PackageIconUrl>
+    <PackageIconUrl>http://carlubian.azurewebsites.net/images/icon-dotnetsafeV2.png</PackageIconUrl>
     <Description>Provides a new way of writing safe code that won't throw exceptions like a madman when something goes wrong.</Description>
     <RepositoryUrl>https://www.github.com/carlubian/DotNet.Safe</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

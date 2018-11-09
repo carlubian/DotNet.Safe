@@ -1,8 +1,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using DotNet.Safe.Standard.Exceptions;
-using DotNet.Safe.Standard.Util;
+using DotNet.Safe.Standard;
 
 namespace DotNet.Safe.Test
 {
@@ -36,6 +35,14 @@ namespace DotNet.Safe.Test
                 .Should().BeOfType(typeof(Success<Unit>))
                 .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
                 .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+        }
+
+        [TestMethod]
+        public void TestNullAction()
+        {
+            Action act = null;
+            Try.This(act).Now()
+                .Should().BeOfType(typeof(Failure<Unit>));
         }
 
         [TestMethod]
@@ -77,6 +84,18 @@ namespace DotNet.Safe.Test
         {
             Try.This(GetFaulty)
                 .Otherwise(err => Console.WriteLine(err))
+                .Now()
+                .Should().BeOfType(typeof(Failure<int>))
+                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
+                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+        }
+
+        [TestMethod]
+        public void TestNullOtherwise()
+        {
+            Action<string> act = null;
+            Try.This(GetFaulty)
+                .Otherwise(act)
                 .Now()
                 .Should().BeOfType(typeof(Failure<int>))
                 .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)

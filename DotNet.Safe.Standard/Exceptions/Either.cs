@@ -1,4 +1,4 @@
-﻿namespace DotNet.Safe.Standard.Exceptions
+﻿namespace DotNet.Safe.Standard
 {
     /// <summary>
     /// Represents either a success or a failure.

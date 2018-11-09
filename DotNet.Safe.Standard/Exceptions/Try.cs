@@ -1,8 +1,8 @@
-﻿using DotNet.Safe.Standard.Exceptions.Steps;
-using DotNet.Safe.Standard.Util;
+﻿using DotNet.Safe.Standard.Exceptions;
+using DotNet.Safe.Standard.Exceptions.Steps;
 using System;
 
-namespace DotNet.Safe.Standard.Exceptions
+namespace DotNet.Safe.Standard
 {
     /// <summary>
     /// Try exposes methods to start a function composition.

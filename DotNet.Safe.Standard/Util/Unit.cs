@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNet.Safe.Standard.Util
+namespace DotNet.Safe.Standard
 {
     /// <summary>
     /// Unit is used as a type when handling void-consuming or
@@ -32,7 +32,7 @@ namespace DotNet.Safe.Standard.Util
         /// </summary>
         /// <param name="other">Other Unit</param>
         /// <returns>True (Unit is always equal to itself)</returns>
-        public bool Equals(Unit other) => true;
+        public bool Equals(Unit other) => other != null;
 
         /// <summary>
         /// Returns a numeric identifier for this object.

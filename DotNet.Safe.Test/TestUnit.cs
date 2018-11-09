@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
-using DotNet.Safe.Standard.Util;
+using DotNet.Safe.Standard;
 
 namespace DotNet.Safe.Test
 {
@@ -37,6 +37,19 @@ namespace DotNet.Safe.Test
                 .Should().BeFalse();
 
             Unit.Instance().Equals(0)
+                .Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void TestEqualsNull()
+        {
+            Unit.Instance().Equals(null)
+                .Should().BeFalse();
+
+            object.Equals(null, Unit.Instance())
+                .Should().BeFalse();
+
+            object.Equals(Unit.Instance(), null)
                 .Should().BeFalse();
         }
     }

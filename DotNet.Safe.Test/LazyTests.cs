@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using DotNet.Safe.Standard.Exceptions;
+using DotNet.Safe.Standard;
 
 namespace DotNet.Safe.Test
 {

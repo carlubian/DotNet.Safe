@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
-using DotNet.Safe.Standard.Exceptions;
+using DotNet.Safe.Standard;
 using DotNet.Safe.Standard.Events;
 
 namespace DotNet.Safe.Test

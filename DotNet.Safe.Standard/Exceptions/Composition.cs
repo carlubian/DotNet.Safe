@@ -41,7 +41,8 @@ namespace DotNet.Safe.Standard.Exceptions
         /// <returns>In-progress composition</returns>
         public Composition<TCurrent> Attach(ICompositionListener listener)
         {
-            _listeners.Add(listener);
+            if (listener != null)
+                _listeners.Add(listener);
             return this;
         }
 
