@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DotNet.Safe.Standard.Exceptions
+namespace DotNet.Safe.Standard
 {
     /// <summary>
     /// Represents a composition ready to be executed on demand.
