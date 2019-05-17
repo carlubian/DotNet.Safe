@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using DotNet.Safe.Standard;
+using DotNet.Safe;
+using System;
+using OneOf;
 
 namespace DotNet.Safe.Test
 {
@@ -12,17 +14,15 @@ namespace DotNet.Safe.Test
         {
             var lazy = Try.This(GetNumber).Later();
             
-            lazy.Eval()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 2)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
+            lazy()
+                .Should().BeOfType<OneOf<int, Exception>>()
+                .And.Match<OneOf<int, Exception>>(n => n.AsT0 == 2);
 
             lazy = Try.This(GetFaulty).Later();
 
-            lazy.Eval()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            lazy()
+                .Should().BeOfType<OneOf<int, Exception>>()
+                .And.Match<OneOf<int, Exception>>(n => n.IsT1);
         }
 
         [TestMethod]
@@ -31,23 +31,21 @@ namespace DotNet.Safe.Test
             var lazy = Try.This(GetNumber)
                 .Then(Multiply).Later();
 
-            lazy.Eval()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 4)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
+            lazy()
+                .Should().BeOfType<OneOf<int, Exception>>()
+                .And.Match<OneOf<int, Exception>>(n => n.AsT0 == 4);
 
             lazy = Try.This(GetFaulty)
                 .Then(Multiply).Later();
 
-            lazy.Eval()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            lazy()
+                .Should().BeOfType<OneOf<int, Exception>>()
+                .And.Match<OneOf<int, Exception>>(n => n.IsT1);
         }
 
         private int GetNumber() => 2;
 
-        private int GetFaulty() => throw new System.Exception("Error");
+        private int GetFaulty() => throw new ArgumentException("Some error");
 
         private int Multiply(int n) => n * 2;
     }

@@ -1,7 +1,8 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FluentAssertions;
-using DotNet.Safe.Standard;
+using DotNet.Safe;
+using OneOf;
 
 namespace DotNet.Safe.Test
 {
@@ -11,112 +12,108 @@ namespace DotNet.Safe.Test
         [TestMethod]
         public void TestSingleCall()
         {
-            Try.This(GetNumber).Now()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 2)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
+            var result = Try.This(GetNumber).Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(2);
 
-            Try.This(GetFaulty).Now()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            result = Try.This(GetFaulty).Now();
+            result.IsT0.Should().BeFalse();
+            result.IsT1.Should().BeTrue();
+            result.AsT1.Should().NotBeNull().And.BeOfType<ArgumentException>();
         }
 
         [TestMethod]
         public void TestAction()
         {
-            Try.This(() => Console.WriteLine("Foo")).Now()
-                .Should().BeOfType(typeof(Success<Unit>))
-                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
-                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+            var result = Try.This(() => Console.WriteLine("Foo")).Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(Unit.Value);
 
-            Try.This(GetNumber)
-                .Then((n) => Console.WriteLine(n)).Now()
-                .Should().BeOfType(typeof(Success<Unit>))
-                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
-                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+            result = Try.This(GetNumber)
+                        .Then(n => Console.WriteLine(n)).Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(Unit.Value);
         }
 
         [TestMethod]
         public void TestNullAction()
         {
             Action act = null;
-            Try.This(act).Now()
-                .Should().BeOfType(typeof(Failure<Unit>));
+            var result = Try.This(act).Now();
+            result.IsT0.Should().BeFalse();
+            result.IsT1.Should().BeTrue();
         }
 
         [TestMethod]
         public void TestConsumer()
         {
-            Try.This((str) => Console.WriteLine(str), "Foo").Now()
-                .Should().BeOfType(typeof(Success<Unit>))
-                .And.Match<Either<Unit>>(n => n.GetOrElse(null) == Unit.Instance())
-                .And.Match<Either<Unit>>(n => n.ErrorOrElse("") == "");
+            var result = Try.This((str) => Console.WriteLine(str), "Foo").Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(Unit.Value);
         }
 
         [TestMethod]
         public void TestFunction()
         {
-            Try.This(Multiply, 12).Now()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 24)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
+            var result = Try.This(Multiply, 12).Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(24);
         }
 
         [TestMethod]
         public void TestChainCalls()
         {
-            Try.This(GetNumber)
-                .Then(Multiply).Now()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == 4)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "");
+            var result = Try.This(GetNumber)
+                            .Then(Multiply).Now();
+            result.IsT0.Should().BeTrue();
+            result.IsT1.Should().BeFalse();
+            result.AsT0.Should().Be(4);
 
-            Try.This(GetFaulty)
-                .Then(Multiply).Now()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            result = Try.This(GetFaulty)
+                        .Then(Multiply).Now();
+            result.IsT0.Should().BeFalse();
+            result.IsT1.Should().BeTrue();
         }
 
         [TestMethod]
         public void TestFailure()
         {
-            Try.This(GetFaulty)
-                .Otherwise(err => Console.WriteLine(err))
-                .Now()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            var result = Try.This(GetFaulty)
+                            .Otherwise(exc => Console.WriteLine(exc))
+                            .Now();
+            result.IsT0.Should().BeFalse();
+            result.IsT1.Should().BeTrue();
+            result.AsT1.Should().NotBeNull().And.BeOfType<ArgumentException>();
         }
 
         [TestMethod]
         public void TestNullOtherwise()
         {
-            Action<string> act = null;
-            Try.This(GetFaulty)
-                .Otherwise(act)
-                .Now()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.Match<Either<int>>(n => n.GetOrElse(-1) == -1)
-                .And.Match<Either<int>>(n => n.ErrorOrElse("") == "Error");
+            Action<Exception> act = null;
+            var result = Try.This(GetFaulty)
+                            .Otherwise(act)
+                            .Now();
+            result.IsT0.Should().BeFalse();
+            result.IsT1.Should().BeTrue();
+            result.AsT1.Should().NotBeNull().And.BeOfType<ArgumentException>();
         }
 
         [TestMethod]
         public void TestEitherUnwrap()
         {
-            Try.This(GetEither).Now()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.NotBeOfType(typeof(Success<Success<int>>));
+            var result = Try.This(GetOneOf).Now();
+            result.IsT0.Should().BeTrue();
+            result.AsT0.GetType().Should().Be(typeof(int));
 
-            Try.This(GetFailure).Now()
-                .Should().BeOfType(typeof(Failure<int>))
-                .And.NotBeOfType(typeof(Success<Failure<int>>));
-
-            Try.This(GetNumber)
-                .Then(GetEither).Now()
-                .Should().BeOfType(typeof(Success<int>))
-                .And.NotBeOfType(typeof(Success<Success<int>>));
+            result = Try.This(GetNumber)
+                        .Then(GetOneOf).Now();
+            result.IsT0.Should().BeTrue();
+            result.AsT0.GetType().Should().Be(typeof(int));
         }
 
         [TestMethod]
@@ -125,12 +122,12 @@ namespace DotNet.Safe.Test
             int handles = 0;
 
             Try.This(GetNumber)
-                .Otherwise(() => handles++)
+                .Otherwise(exc => handles++)
                 .Then(GetFaulty)
-                .Otherwise(() => handles++)
-                .Otherwise(() => handles++)
+                .Otherwise(exc => handles++)
+                .Otherwise(exc => handles++)
                 .Then(GetNumber)
-                .Otherwise(() => handles++)
+                .Otherwise(exc => handles++)
                 .Now();
 
             handles.Should().Be(1);
@@ -138,12 +135,10 @@ namespace DotNet.Safe.Test
 
         private int GetNumber() => 2;
 
-        private int GetFaulty() => throw new System.Exception("Error");
+        private int GetFaulty() => throw new ArgumentException("Some error");
 
         private int Multiply(int n) => n * 2;
 
-        private Either<int> GetEither() => new Success<int>(1024);
-
-        private Either<int> GetFailure() => new Failure<int>("Kaboom!");
+        private OneOf<int, Exception> GetOneOf() => 1024;
     }
 }

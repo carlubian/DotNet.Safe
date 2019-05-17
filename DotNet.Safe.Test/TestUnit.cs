@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
-using DotNet.Safe.Standard;
+using DotNet.Safe;
 
 namespace DotNet.Safe.Test
 {
@@ -13,43 +13,43 @@ namespace DotNet.Safe.Test
         [TestMethod]
         public void TestUnitHashcode()
         {
-            Unit.Instance().GetHashCode()
+            Unit.Value.GetHashCode()
                 .Should().Be(0);
         }
 
         [TestMethod]
         public void TestUnitToString()
         {
-            Unit.Instance().ToString()
+            Unit.Value.ToString()
                 .Should().Be("[Unit]");
         }
 
         [TestMethod]
         public void TestUnitEquals()
         {
-            Unit.Instance().Equals(Unit.Instance())
+            Unit.Value.Equals(Unit.Value)
                 .Should().BeTrue();
 
-            Unit.Instance().Equals(Unit.Instance() as object)
+            Unit.Value.Equals(Unit.Value as object)
                 .Should().BeTrue();
 
-            Unit.Instance().Equals(new object())
+            Unit.Value.Equals(new object())
                 .Should().BeFalse();
 
-            Unit.Instance().Equals(0)
+            Unit.Value.Equals(0)
                 .Should().BeFalse();
         }
 
         [TestMethod]
         public void TestEqualsNull()
         {
-            Unit.Instance().Equals(null)
+            Unit.Value.Equals(null)
                 .Should().BeFalse();
 
-            object.Equals(null, Unit.Instance())
+            object.Equals(null, Unit.Value)
                 .Should().BeFalse();
 
-            object.Equals(Unit.Instance(), null)
+            object.Equals(Unit.Value, null)
                 .Should().BeFalse();
         }
     }

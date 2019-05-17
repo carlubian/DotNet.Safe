@@ -16,13 +16,19 @@ Start using DotNet.Safe in your projects and enjoy the next level of safe, expre
 By using DotNet.Safe, you have the guarantee that all exceptions thrown will be handled securely and transparently. Focus on the results, and leave the means to us!
 
 ### No need for Shadow Hunting
-Understand what a piece of code does with a single glance. You don't have to delve between boilerplate exception handling code.
+Avoid mangling useful code with boilerplate exception handling shenanigans, and leave your classes clean and shiny.
 
 ### Easy maintenance
-Easily extend or diminish a process by adding or removing calls. The fluent API exposed allows for quick and painless tweaking of program logic.
+Extend or diminish a process by simply adding or removing calls. The fluent API exposed allows for simple tweaking of any business process.
+
+### Virtually Intelligent
+Use Intellisense to help guide you. DotNet.Safe is type-safe and verified at compile time, so you won't get any incompatible process chains.
+
+### Modularity
+You can define your desired level of granularity for error reporting, from a single result at the end of a process to a series of incremental checks.
 
 ### Future proof
-DotNet.Safe can be used from .NET Framework, .NET Core, Mono, Xamarin and the UWP. It also supports the latest features in C#, such as tuples and local functions.
+DotNet.Safe can be used from any .NET Standard platform. It also supports the latest features in C# so you can start living in the world of tomorrow.
 
 ***
 

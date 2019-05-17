@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotNet.Safe.Standard\DotNet.Safe.Standard.csproj" />
+    <ProjectReference Include="..\DotNet.Safe\DotNet.Safe.csproj" />
   </ItemGroup>
 
 </Project>
