@@ -1,0 +1,465 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Basic Example - DotNet.Safe</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/selawik" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/muli" type="text/css" />
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/flushing.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="future-3 grey-3-text">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark blue-4">
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="index.html">DotNet.Safe</a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Reference.html">References</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Download.html">Download</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <!-- Encabezado -->
+<div class="jumbotron jumbotron-fluid blue-3">
+    <div class="row justify-content-center container-fluid">
+        <div class="col-sm-8">
+
+            <h2 class="future-3-text">Start here</h2>
+            <p class="lead future-3-text">Get started with an easy, short example 
+                that showcases the major features of DotNet.Safe.</p>
+            <hr class="my-4">
+
+            <a class="btn gold-3 future-3-text btn-lg" href="Reference.html" role="button">Go back</a>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Start at the beggining</h2>
+            <p class="card-text subtitle">
+                First, we'll take a look at some preexisting code.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    try
+    {
+        Console.WriteLine("These are the active shipments:");
+        foreach(var entry in Database.GetActiveShipments())
+            Console.WriteLine(entry.ToString());
+    } catch(Exception ex)
+    {
+        Console.WriteLine("Active shipments couldn't be recovered.");
+        return;
+    }
+    
+    Console.WriteLine("Please enter the shipment number:");
+    
+    int shipmentNumber;
+    if(!int.TryParse(Console.ReadLine(), out shipmentNumber))
+    {
+        Console.WriteLine("Shipment number is invalid.");
+        return;
+    }
+    
+    try
+    {
+        var shipmentDetails = Database.GetShipmentDetails(shipmentNumber);
+        Console.WriteLine("Details for the selected shipment:");
+        Console.WriteLine(shipmentDetails.ToString());
+    } catch(Exception ex)
+    {
+        Console.WriteLine("Shipment details couldn't be recovered.");
+        return;
+    }
+}</pre>
+            <p>
+                This code represents a basic application that allows the user to see the 
+                details of a shipment. First, it will present a list of active shipments 
+                to choose from. Then, the user will enter the number of one of those. 
+                After a database query, the details of the shipment are printed on the console.
+            </p>
+            <p>
+                As each of the stages can fail, exception handling code is splatered everywhere,
+                making the code messy and difficult to read.
+            </p>
+            <p>
+                We will now start fixing this code to make it cleaner, safer and more modular.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Refactor all the things!</h2>
+            <p class="card-text subtitle">
+                Let's start by separating the steps into different methods.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                Instead of having the entire logic in one method, we'll move the four 
+                steps (show active shipments, ask for shipment number, query the database, 
+                show shipment datails) into their own methods. That will improve code 
+                quality by making each method perform only one task.
+            </p>
+            <p>
+                This is how it looks like after that change:
+            </p>
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    try
+    {
+        ShowActiveShipments();
+        var shipmentNumber = AskForShipmentNumber();
+        var shipmentDetails = Database.GetShipmentDetails(shipmentNumber);
+        ShowShipmentDetails(shipmentDetails);
+    } catch(Exception ex)
+    { }
+}
+
+private void ShowActiveShipments()
+{
+    try
+    {
+        Console.WriteLine("These are the active shipments:");
+        foreach(var entry in Database.GetActiveShipments())
+            Console.WriteLine(entry.ToString());
+    } catch(Exception ex)
+    {
+        Console.WriteLine("Active shipments couldn't be recovered.");
+        throw ex;
+    }
+}
+
+private int AskForShipmentNumber()
+{
+    Console.WriteLine("Please enter the shipment number:");
+    
+    int shipmentNumber;
+    if(!int.TryParse(Console.ReadLine(), out shipmentNumber))
+    {
+        Console.WriteLine("Shipment number is invalid.");
+        throw new Exception();
+    }
+    
+    return shipmentNumber;
+}
+
+private void ShowShipmentDetails(ShipmentDetails details)
+{
+    Console.WriteLine("Details for the selected shipment:");
+    Console.WriteLine(shipmentDetails?.ToString());
+}</pre>
+            <p>
+                Now that the steps are separated, it's easier to make changes and update 
+                the code. Note that we still need a try-catch in the main method, as a 
+                failure in any of the steps means that none of the next steps can be executed.
+            </p>
+            <p>
+                That problem will be fixed in a moment. First, let's check a small requirement.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido oscuro -->
+<div class="jumbotron jumbotron-fluid blue-3 my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2 class="future-3-text">Hey, listen!</h2>
+            <p class="card-text future-3-text">
+                In order to chain the steps into a composition, they must adhere to one rule.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+            <p>
+                Before we start using a composition to execute the steps, we must make sure 
+                they are composable. A set of steps is composable 
+                <span class="emphasis blue-3-text">if the return value of a step is the parameter for the next
+                </span>.
+            </p>
+            <p>
+                In this case, the steps are valid for composition, as they follow that rule:
+                <ul>
+                    <li>ShowActiveShipments(): void -> void</li>
+                    <li>AskForShipmentNumber(): void -> int</li>
+                    <li>Database.GetShipmentDetails(): int -> ShipmentDetails</li>
+                    <li>ShowShipmentDetails(): ShipmentDetails -> void</li>
+                </ul>
+            </p>
+            <p>
+                Should a set of steps not fit in this rule, you'll have to modify them in a 
+                way that makes them composable prior to using DotNet.Safe to execute them. 
+                Note that, as an exception to this rule, 
+                <span class="emphasis blue-3-text">return values can be ignored</span>. Thus, 
+                a step that returns something can be followed by a step that receives no 
+                parameters. In that case, the return value of the preceeding step will be discarded.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>We have to Try</h2>
+            <p class="card-text subtitle">
+                We're all set! This is where the magic happens.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+            <p>
+                As the steps are ready to be composed, the process is really simple.
+            </p>
+            <p>
+                First, remove all exception handling code, and leave only the actual 
+                logic of the process at hand. It will look like this:
+            </p>
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    ShowActiveShipments();
+    var shipmentNumber = AskForShipmentNumber();
+    var shipmentDetails = Database.GetShipmentDetails(shipmentNumber);
+    ShowShipmentDetails(shipmentDetails);
+}
+
+private void ShowActiveShipments()
+{
+    Console.WriteLine("These are the active shipments:");
+    foreach(var entry in Database.GetActiveShipments())
+        Console.WriteLine(entry.ToString());
+}
+
+private int AskForShipmentNumber()
+{
+    Console.WriteLine("Please enter the shipment number:");    
+    return int.Parse(Console.ReadLine());
+}
+
+private void ShowShipmentDetails(ShipmentDetails details)
+{
+    Console.WriteLine("Details for the selected shipment:");
+    Console.WriteLine(shipmentDetails?.ToString());
+}</pre>
+            <p>
+                Now substitute the current calls in the main method with a composition using the Try class.
+            </p>
+            <p>
+                Start it by calling <span class="emphasis blue-3-text">Try.This()</span>, and 
+                passing the first step as parameter. Append the following steps with 
+                <span class="emphasis blue-3-text">.Then()</span> and finalize the composition with 
+                a call to <span class="emphasis blue-3-text">.Now()</span>
+            </p>
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    Try.This(ShowActiveShipment)
+        .Then(AskForShipmentNumber)
+        .Then(Database.GetShipmentDetails)
+        .Then(ShowShipmentDetails)
+        .Now();
+}
+
+private void ShowActiveShipments()
+{
+    Console.WriteLine("These are the active shipments:");
+    foreach(var entry in Database.GetActiveShipments())
+        Console.WriteLine(entry.ToString());
+}
+
+private int AskForShipmentNumber()
+{
+    Console.WriteLine("Please enter the shipment number:");    
+    return int.Parse(Console.ReadLine());
+}
+
+private void ShowShipmentDetails(ShipmentDetails details)
+{
+    Console.WriteLine("Details for the selected shipment:");
+    Console.WriteLine(shipmentDetails?.ToString());
+}</pre>
+        </div>
+    </div>
+
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>If all else fails</h2>
+            <p class="card-text subtitle">
+                We could ship it as it is, but it's usually polite to report errors.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+            <p>
+                The composition is already working, and will execute the steps in order 
+                until it finishes or one of the steps fail. If that happens, the remaining 
+                steps are ignored and the error is propagated forward.
+            </p>
+            <p>
+                In its current state, the composition won't tell the user anything if the 
+                steps fail. Users will likely appreciate some feedback, so we must add 
+                that functionality.
+            </p>
+            <p>
+                To achieve this, use the <span class="emphasis blue-3-text">.Otherwise()</span> 
+                method. You can add calls to Otherwise between the steps, in any number or 
+                combination. They will only be executed if the composition has failed by 
+                the time it reaches the call. If it's successful, it will simply ignore those calls.
+            </p>
+            <p>
+                Note that, after the first Otherwise step is executed, the rest of them are 
+                also skipped. This prevents unrelated error handlers to try and fix steps 
+                that weren't even executed.
+            </p>
+            <p>
+                Otherwise takes a System.Exception object as a parameter, normally 
+                containing information on the reason for failure.
+            </p>
+            <p>
+                The number of Otherwise calls to be used depends on the level of granularity 
+                you want for error reporting. You can add one at the end for a high-level 
+                report, such as:
+            </p>
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    Try.This(ShowActiveShipment)
+        .Then(AskForShipmentNumber)
+        .Then(Database.GetShipmentDetails)
+        .Then(ShowShipmentDetails)
+        .Otherwise(exc => Console.WriteLine(exc.Message))
+        .Now();
+}</pre>
+            <p>
+                Or, if you prefer, add several calls to report lower-level information:
+            </p>
+            <pre class="prettyprint lang-cs">public void ViewShipmentDetails()
+{
+    Try.This(ShowActiveShipment)
+        .Otherwise(exc => Console.WriteLine($"Active shipments couldn't be recovered: {exc.Message}"))
+        .Then(AskForShipmentNumber)
+        .Otherwise(exc => Console.WriteLine($"Shipment number is invalid: {exc.Message}"))
+        .Then(Database.GetShipmentDetails)
+        .Otherwise(exc => Console.WriteLine($"Shipment details couldn't be recovered: {exc.Message}"))
+        .Then(ShowShipmentDetails)
+        .Now();
+}</pre>
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido oscuro -->
+<div class="jumbotron jumbotron-fluid blue-3 my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2 class="future-3-text">You're all done!</h2>
+            <p class="card-text future-3-text">
+                Now you should be able to use DotNet.Safe to adapt basic 
+                applications. For more details, check the rest of the documentation.
+            </p>
+            <hr class="my-4">
+            <a class="btn gold-3 future-3-text btn-lg" href="Reference.html" role="button">Go back</a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue-3">
+
+    <div class="footer-copyright text-center future-3-text py-3">
+        Hello from Spain!
+    </div>
+
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/mdb.js"></script>
+
+</body>
+
+</html>
+

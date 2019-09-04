@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Rogue Library example - DotNet.Safe</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/selawik" type="text/css" />
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/muli" type="text/css" />
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/flushing.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body class="future-3 grey-3-text">
+    
+    <nav class="navbar navbar-expand-lg navbar-dark blue-4">
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="index.html">DotNet.Safe</a>
+
+        <!-- Collapse button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            <!-- Links -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="Features.html">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Reference.html">References</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Download.html">Download</a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+<!-- Encabezado -->
+<div class="jumbotron jumbotron-fluid blue-3">
+    <div class="row justify-content-center container-fluid">
+        <div class="col-sm-8">
+
+            <h2 class="future-3-text">Rogue Library</h2>
+            <p class="lead future-3-text">This guide will walk you through the steps of setting up an adapter 
+            over a third-party library to safely use it.</p>
+            <hr class="my-4">
+
+            <a class="btn btn-lg gold-3 future-3-text" asp-page="/Reference" role="button">Go back</a>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Old, unhappy, far-off things</h2>
+            <p class="card-text subtitle">
+                Are we in over our heads?
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                Imagine you must use a third-party library (whose source code
+                you don't have access to) that seems hellbent on throwing exceptions up in your face.
+            </p>
+            <p>
+                Fear not! Though the situation may seem bleak, there is an easy solution: We're going
+                to put a layer between your code and that rogue library by implementing what's called
+                an "Adapter Pattern".
+            </p>
+            <p>
+                For simplicity's sake, let's say that the library exposes the following functions:
+            </p>
+            <pre class="prettyprint lang-cs">var library = new SloppyCompany.Xml.XmlParser();
+
+// Reads an XML document and return its contents parsed
+// May throw exceptions if the file doesn't exist, or has
+// a wrong format, ...
+var result = library.LoadDocument("filename.xml");
+
+// Store the parsed data in an XML document
+// May throw exceptions if the content has an invalid
+// format, or the file is read-only, ...
+library.SaveDocument(content, "filename.xml");</pre>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>The foundations for success</h2>
+            <p class="card-text subtitle">
+                Start building the pieces to solve our problem.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                We'll start by creating a class with the same methods the library is exposing.
+                Inside those methods, a call to the library will be composed via a Try call to make it safe to use.
+            </p>
+            <pre class="prettyprint lang-cs">public class SafeXmlParser
+{
+    var library = new SloppyCompany.Xml.XmlParser();
+    
+    public XMLDocument LoadDocument(string filename)
+    {
+        // Call to library.LoadDocument will be here
+    }
+    
+    public void SaveDocument(XMLDocument content, string filename)
+    {
+        // Call to library.SaveDocument will be here
+    }
+}</pre>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Now fill in the blanks</h2>
+            <p class="card-text subtitle">
+                The framework is ready and waiting for some code.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                Once we wrap the rogue library calls inside a composition, we'll need a
+                way to determine if those calls succeeded or failed. This leads us to a new
+                concept: the <span class="emphasis blue-3-text">OneOf</span> class.
+            </p>
+            <p>
+                OneOf is a class that can contain one of several types, and is an
+                approximation to Discriminated Unions, a concept present in other
+                functional languages like F#.
+            </p>
+            <p>
+                The OneOf implementation used by DotNet.Safe is contained on a third
+                party library, more specifically,
+                <a href="https://github.com/mcintyre321/OneOf">this one</a>. For more
+                information about the use and peculiarities of OneOf, check their
+                own documentation.
+            </p>
+            <p>
+                The good news is that we don't need to do anything new to get a OneOf.
+                Until now, compositions have been treated as if they return void, but
+                actually the call to .Now() at the end of a composition return an instance of
+                OneOf with the either the result or an exception. 
+                Now we just need to use it to report the result back.
+            </p>
+            <pre class="prettyprint lang-cs">public class SafeXmlParser
+{
+    var library = new SloppyCompany.Xml.XmlParser();
+
+    public OneOf&lt;XMLDocument, Exception&gt; LoadDocument(string filename)
+    {
+        return Try.This(library.LoadDocument, filename).Now();
+    }
+    
+    public OneOf&lt;Unit, Exception&gt; SaveDocument(XMLDocument content, string filename)
+    {
+        return Try.This(() => library.SaveDocument(content, filename)).Now();
+    }
+}</pre>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido oscuro -->
+<div class="jumbotron jumbotron-fluid gold-3 my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2 class="future-3-text">What measure is a Unit?</h2>
+            <p class="card-text future-3-text">
+                Also, is it an absolute unit or a relative unit?
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                You'll also have noticed that the second method used to return void, and now returns
+                a OneOf&lt;Unit, Exception&gt; instead of a OneOf&lt;void, Exception&gt;. The reason for that is simple:
+                void isn't actually a type, so it can't be used as a generic type parameter.
+                Instead, Unit is used to represent an empty type.
+            </p>
+            <p>
+                Unit doesn't have any properties or methods, and it can't be directly instanced. Instead,
+                you should call Unit.Value if you need an instance of Unit. Also, when comparing
+                equality, Unit will only be equal to itself.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido claro -->
+<div class="jumbotron jumbotron-fluid my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Make thee mightier yet</h2>
+            <p class="card-text subtitle">
+                The rogue library is now safe to use!
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <!-- Texto de la sección -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-sm-8">
+
+            <p>
+                With the adapter finished, you can use the library safely through the class we've just
+                created. Instead of catching exceptions, check whether the returned OneOf is a
+                valid result or an exception:
+            </p>
+            <pre class="prettyprint lang-cs">private XmlDocument document;
+
+public void XmlStuff()
+{
+    var parser = new SafeXmlParser();
+    
+    
+    var loadResult = parser.LoadDocument("filename.xml");
+    // loadResult is of type OneOf&lt;XMLDocument, Exception&gt;
+    
+    if(loadResult.IsT0)
+        // The call was successful, we can get the result
+        document = loadResult.AsT0;
+    else if(loadResult.IsT1)
+        // The call failed, we get an exception
+        Console.WriteLine(loadResult.AsT1);
+    
+        
+    var saveResult = parser.SaveDocument(document, "filename.xml");
+    // saveResult is of type OneOf&lt;Unit, Exception&gt;
+    
+    if(saveResult.IsT0)
+        Console.WriteLine("Saving successful");
+        // There's no point in calling .AsT0, as
+        // it would return Unit
+    else if(saveResult.IsT1)
+        Console.WriteLine(saveResult.AsT1);
+        // However, the error message could hold
+        // useful information
+}</pre>
+            <p>
+                There are several ways of operating with OneOf, like using the Match() or TryPick() methods.
+                For more information, check the OneOf documentation.
+            </p>
+
+        </div>
+    </div>
+</div>
+
+<!-- Panel de contenido oscuro -->
+<div class="jumbotron jumbotron-fluid blue-3 my-5">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <h2 class="future-3-text">You're all done!</h2>
+            <p class="card-text future-3-text">
+                Throwing libraries, beware! You can now use any C# library without fear
+                of uncaught exceptions. <s>Not bad for a puny human.</s>
+            </p>
+            <hr class="my-4">
+            <a class="btn gold-3 future-3-text btn-lg" href="Reference.html" role="button">Go back</a>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="page-footer font-small blue-3">
+
+    <div class="footer-copyright text-center future-3-text py-3">
+        Hello from Spain!
+    </div>
+
+</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.0/dist/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script type="text/javascript" src="js/popper.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/mdb.js"></script>
+
+</body>
+
+</html>
+
