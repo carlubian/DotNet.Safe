@@ -30,7 +30,10 @@ namespace DotNet.Safe.Core
                 _properties["AlreadyHandled"] = "True";
                 _action(param.AsT1);
             }
-            catch { }
+            catch 
+            {
+                // Intentionally left empty
+            }
 
             return param.AsT1;
         }

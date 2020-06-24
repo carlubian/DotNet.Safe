@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net5.0</TargetFrameworks>
     <Id>DotNet.Safe.Standard</Id>
     <Title>DotNet.Safe</Title>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <Authors>carlubian</Authors>
     <Owners>carlubian</Owners>
     <Company>carlubian</Company>
-    <PackageReleaseNotes>Rebuilt on a smaller and more flexible code base.</PackageReleaseNotes>
+    <PackageReleaseNotes>Initial support for .NET 5</PackageReleaseNotes>
     <PackageProjectUrl>https://DotNetSafe.azurewebsites.net</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>http://carlubian.azurewebsites.net/images/icon-dotnetsafeV2.png</PackageIconUrl>
@@ -16,7 +16,7 @@
     <RepositoryUrl>https://www.github.com/carlubian/DotNet.Safe</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>exceptions, composition, dotnet-standard, dotnet-core</PackageTags>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
