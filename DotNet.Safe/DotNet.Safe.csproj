@@ -16,7 +16,7 @@
     <RepositoryUrl>https://www.github.com/carlubian/DotNet.Safe</RepositoryUrl>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <PackageTags>exceptions, composition, dotnet-standard, dotnet-core</PackageTags>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
