@@ -34,58 +34,10 @@ DotNet.Safe can be used from any .NET Standard platform. It also supports the la
 
 ## Compatible platforms
 
-<table>
-	<thead>
-		<tr>
-			DotNet.Safe is currently multi-targeting: <strong>.NET Standard 2.0</strong> and <strong>.NET Framework 4.6.1</strong>
-		</tr>
-		<tr>
-			<th>Platform name</th>
-			<th>Version required</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>.NET Standard</td>
-			<td>2.0</td>
-		</tr>
-		<tr>
-			<td>.NET Core</td>
-			<td>2.0</td>
-		</tr>
-		<tr>
-			<td>.NET Framework</td>
-			<td>4.6.1</td>
-		</tr>
-		<tr>
-			<td>Universal Windows Platform</td>
-			<td>10.0.16299</td>
-		</tr>
-		<tr>
-			<td>Xamarin.Android</td>
-			<td>8.0</td>
-		</tr>
-		<tr>
-			<td>Xamarin.iOS</td>
-			<td>10.14</td>
-		</tr>
-		<tr>
-			<td>Xamarin.Mac</td>
-			<td>3.8</td>
-		</tr>
-		<tr>
-			<td>Mono</td>
-			<td>5.4</td>
-		</tr>
-		<tr>
-			<td>Unity</td>
-			<td>2018.1</td>
-		</tr>
-	</tody>
-</table>
+DotNet.Safe is currently multi-targeting: <code>.NET Standard 2.0</code> and <code>.NET Core 5.0</code>.
 
 ***
 
 ## More information
 
-Visit our website at [http://DotNetSafe.azurewebsites.net](http://DotNetSafe.azurewebsites.net) to get more information and view guides on how to use DotNet.Safe
+Visit our website at [https://carlubian.github.io/DotNet.Safe](https://carlubian.github.io/DotNet.Safe) to get more information and view guides on how to use DotNet.Safe
