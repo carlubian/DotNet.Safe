@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNet.Misc.Collections" Version="1.0.1" />
-    <PackageReference Include="OneOf" Version="2.1.155" />
+    <PackageReference Include="OneOf" Version="3.0.162" />
   </ItemGroup>
 
 </Project>
