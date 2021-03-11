@@ -24,7 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNet.Misc.Collections" Version="1.0.1" />
+    <PackageReference Include="DotNet.Misc.Collections" Version="1.2.0" />
     <PackageReference Include="OneOf" Version="3.0.178" />
   </ItemGroup>
 
