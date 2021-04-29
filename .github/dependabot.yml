@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+    timezone: Europe/Madrid
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: DotNet.Misc.Collections
+    versions:
+    - 1.1.0
+  - dependency-name: OneOf
+    versions:
+    - 3.0.176
