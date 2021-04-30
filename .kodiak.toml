@@ -1,0 +1,5 @@
+version = 1
+merge.automerge_label = "dependencies"
+merge.delete_branch_on_merge = true
+merge.optimistic_updates = true
+merge.prioritize_ready_to_merge = true
