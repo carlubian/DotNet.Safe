@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net5.0</TargetFrameworks>
@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNet.Misc.Collections" Version="1.2.1" />
-    <PackageReference Include="OneOf" Version="3.0.243" />
+    <PackageReference Include="OneOf" Version="3.0.255" />
   </ItemGroup>
 
 </Project>
